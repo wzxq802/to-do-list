@@ -53,16 +53,7 @@ export default {
       task: '',
       editedTask: null,
       availableStatuses: ['Сделать', 'В работе', 'Завершено'],
-      tasks: [
-      {
-        name: 'Steal banans from the store',
-        status: 'Сделать',
-      },
-      {
-        name: 'Eat 1 kg chocolate in 1 hour',
-        status: 'В работе',
-      }
-    ]
+      tasks: []
     }
   },
   methods: {
@@ -96,8 +87,22 @@ export default {
       }
 
       this.tasks[id].status = this.availableStatuses[newId];
+    }
+  },
+   mounted() {
+      const savedTasks = localStorage.getItem('tasks');
+      if (savedTasks) {
+        this.tasks = JSON.parse(savedTasks);
+      }
     },
-  }
+    watch: {
+      tasks: {
+        handler(newTasks) {
+          localStorage.setItem('tasks', JSON.stringify(newTasks));
+        },
+        deep: true
+      }
+    }
 }
 </script>
 
