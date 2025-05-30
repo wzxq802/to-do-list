@@ -24,7 +24,7 @@
             </div>
           </td>
           <td>
-            <div class="text-center">
+            <div class="text-center" v-on:click="deleteTask(id)">
               <span class="fa fa-trash"></span>
             </div>
           </td>
@@ -63,6 +63,11 @@ export default {
         name: this.task,
         status: 'Сделать'
       });
+
+      this.task = '';
+    },
+    deleteTask (id) {
+      this.tasks.splice(id, 1);
     }
   }
 }
