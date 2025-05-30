@@ -16,9 +16,13 @@
       </thead>
       <tbody>
         <tr v-for="(task, id) in tasks" :key="id">
-          <th>{{ task.name }}</th>
+          <th>
+            <span :class="{'finished' : task.status === 'Завершено'}">
+              {{ task.name }}
+            </span>
+          </th>
           <td style="width: 200px;">
-            <span v-on:click="changeStatus(id)" class="pointer">
+            <span v-on:click="changeStatus(id)" class="pointer" :class="{'text-red' : task.status === 'Сделать', 'text-yellow': task.status === 'В работе'}">
               {{ task.status }}
             </span>
           </td>
@@ -100,5 +104,14 @@ export default {
 <style scoped>
 .pointer {
   cursor: pointer;
+}
+.finished {
+  text-decoration: line-through;
+}
+.text-red {
+  color: #fa2222;
+}
+.text-yellow {
+  color: yellow;
 }
 </style>
