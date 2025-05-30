@@ -19,7 +19,7 @@
           <th>{{ task.name }}</th>
           <td>{{ task.status }}</td>
           <td>
-            <div class="text-center">
+            <div class="text-center" v-on:click="editTask(id)">
               <span class="fa fa-pen"></span>
             </div>
           </td>
@@ -43,6 +43,7 @@ export default {
   data () {
     return {
       task: '',
+      editedTask: null,
       tasks: [
       {
         name: 'Steal banans from the store',
@@ -59,15 +60,24 @@ export default {
     submitTask () {
       if(this.task.length === 0) return;
 
-      this.tasks.push({
-        name: this.task,
-        status: 'Сделать'
-      });
+      if(this.editedTask === null) {
+        this.tasks.push({
+          name: this.task,
+          status: 'Сделать'
+        });
+      }else {
+        this.tasks[this.editedTask].name = this.task;
+        this.editedTask = null;
+      }
 
       this.task = '';
     },
     deleteTask (id) {
       this.tasks.splice(id, 1);
+    },
+    editTask(id) {
+      this.task = this.tasks[id].name;
+      this.editedTask = id;
     }
   }
 }
