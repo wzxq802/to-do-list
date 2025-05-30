@@ -3,7 +3,7 @@
     <h2 class="text-center mt-5">TO-DO list</h2>
     <div class="d-flex">
       <input v-model="task" type="text" class="form-control rounded-0" placeholder="Введите текст">
-      <button v-on:click="submitTask" class="btn btn-warning rounded-0">Отправить</button>
+      <button v-on:click="submitTask" class="btn btn-warning rounded-0 pointer">Отправить</button>
     </div>
     <table class="table table-bordered mt-5">
       <thead>
@@ -17,7 +17,11 @@
       <tbody>
         <tr v-for="(task, id) in tasks" :key="id">
           <th>{{ task.name }}</th>
-          <td>{{ task.status }}</td>
+          <td style="width: 200px;">
+            <span v-on:click="changeStatus(id)" class="pointer">
+              {{ task.status }}
+            </span>
+          </td>
           <td>
             <div class="text-center" v-on:click="editTask(id)">
               <span class="fa fa-pen"></span>
@@ -44,6 +48,7 @@ export default {
     return {
       task: '',
       editedTask: null,
+      availableStatuses: ['Сделать', 'В работе', 'Завершено'],
       tasks: [
       {
         name: 'Steal banans from the store',
@@ -57,7 +62,7 @@ export default {
     }
   },
   methods: {
-    submitTask () {
+    submitTask() {
       if(this.task.length === 0) return;
 
       if(this.editedTask === null) {
@@ -72,16 +77,28 @@ export default {
 
       this.task = '';
     },
-    deleteTask (id) {
+    deleteTask(id) {
       this.tasks.splice(id, 1);
     },
     editTask(id) {
       this.task = this.tasks[id].name;
       this.editedTask = id;
-    }
+    },
+    changeStatus(id) {
+      let newId = this.availableStatuses.indexOf(this.tasks[id].status);
+
+      if(++newId > 2) {
+        newId = 0;
+      }
+
+      this.tasks[id].status = this.availableStatuses[newId];
+    },
   }
 }
 </script>
 
 <style scoped>
+.pointer {
+  cursor: pointer;
+}
 </style>
